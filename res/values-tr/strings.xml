@@ -300,7 +300,7 @@
     <string name="error_console_header_text_maximized">JavaScript Konsolu</string>
     <string name="error_console_eval_text_hint">Evaluate JavaScript</string>
     <string name="error_console_eval_button_text">Evaluate</string>
-    <string name="pref_show_zoom_controls">Görsel yakınlaştırmayı göster</string>
+    <string name="pref_show_zoom_controls">Yakınlaştırma kontrolünü göster</string>
     <string name="pref_full_screen_mode">Tam ekran</string>
     <string name="incog_tab">Sahte Modu Etkinleştir</string>
     <string name="dis_incog_tab">Sahte Modu Pasifleştir</string>
