@@ -657,6 +657,10 @@
     <string name="pref_lab_webgl">WebGL</string>
     <!-- Summary for the WebGL lab feature [CHAR LIMIT=120] -->
     <string name="pref_lab_webgl_summary">Enable WebGL</string>
+    <!-- Title for the WebSocket feature [CHAR LIMIT=40] -->
+    <string name="pref_lab_websocket">WebSocket</string>
+    <!-- Summary for the WebGL lab feature [CHAR LIMIT=120] -->
+    <string name="pref_lab_websocket_summary">Enable WebSocket</string>
     <!-- Title for bandwidth management preference [CHAR LIMIT=25] -->
     <string name="pref_data_title">Bandwidth management</string>
     <!-- Title for search preloading [CHAR LIMIT=40] -->
