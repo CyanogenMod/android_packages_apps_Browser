@@ -17,7 +17,7 @@
     <!-- The number of lines in the suggestions dropdown in portrait -->
     <integer name="max_suggest_lines_portrait">4</integer>
     <!--  The maximum number of open tabs -->
-    <integer name="max_tabs">64</integer>
+    <integer name="max_tabs">24</integer>
     <!--  The duration of the tab animations in millisecs  -->
     <integer name="tab_animation_duration">200</integer>
     <!-- The maximum number of most visited URLs in the history tab -->
