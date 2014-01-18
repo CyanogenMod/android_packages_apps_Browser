@@ -61,6 +61,7 @@ public class PieControl implements PieMenu.PieController, OnClickListener {
     private PieItem mHistory;
     private PieItem mAddBookmark;
     private PieItem mNewTab;
+    private PieItem mIncognito;
     private PieItem mClose;
     private PieItem mShowTabs;
     private PieItem mInfo;
@@ -138,6 +139,7 @@ public class PieControl implements PieMenu.PieController, OnClickListener {
         mRefresh = makeItem(R.drawable.ic_refresh_holo_dark, 1);
         mForward = makeItem(R.drawable.ic_forward_holo_dark, 1);
         mNewTab = makeItem(R.drawable.ic_new_window_holo_dark, 1);
+        mIncognito = makeItem(R.drawable.ic_new_incognito_holo_dark, 1);
         mClose = makeItem(R.drawable.ic_close_window_holo_dark, 1);
         mInfo = makeItem(android.R.drawable.ic_menu_info_details, 1);
         mFind = makeItem(R.drawable.ic_search_holo_dark, 1);
@@ -158,7 +160,7 @@ public class PieControl implements PieMenu.PieController, OnClickListener {
         stack.setAdapter(mTabAdapter);
         mShowTabs.setPieView(stack);
         setClickListener(this, mBack, mRefresh, mForward, mUrl, mFind, mInfo,
-                mShare, mBookmarks, mNewTab, mClose, mHistory,
+                mShare, mBookmarks, mNewTab, mIncognito, mClose, mHistory,
                 mAddBookmark, mOptions, mRDS);
         if (!BrowserActivity.isTablet(mActivity)) {
             mShowTabs.getView().setOnClickListener(this);
@@ -180,8 +182,8 @@ public class PieControl implements PieMenu.PieController, OnClickListener {
         mUrl.addItem(makeFiller());
         mUrl.addItem(makeFiller());
         mPie.addItem(mShowTabs);
-        mShowTabs.addItem(makeFiller());
         mShowTabs.addItem(mClose);
+        mShowTabs.addItem(mIncognito);
         mShowTabs.addItem(mNewTab);
         mShowTabs.addItem(makeFiller());
         mPie.addItem(mBookmarks);
@@ -215,6 +217,9 @@ public class PieControl implements PieMenu.PieController, OnClickListener {
             mUiController.bookmarkCurrentPage();
         } else if (mNewTab.getView() == v) {
             mUiController.openTabToHomePage();
+            mUi.editUrl(false, true);
+        } else if (mIncognito.getView() == v) {
+            mUiController.openIncognitoTab();
             mUi.editUrl(false, true);
         } else if (mClose.getView() == v) {
             mUiController.closeCurrentTab();

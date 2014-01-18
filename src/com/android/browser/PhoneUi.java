@@ -187,6 +187,10 @@ public class PhoneUi extends BaseUi {
         if (newtab != null && !mUseQuickControls) {
             newtab.setVisible(false);
         }
+        MenuItem incognito = menu.findItem(R.id.incognito_menu_id);
+        if (incognito != null) {
+            incognito.setVisible(showingNavScreen() || mUseQuickControls);
+        }
         MenuItem fullscreen = menu.findItem(R.id.fullscreen_menu_id);
         if (fullscreen != null) {
             fullscreen.setVisible(!showingNavScreen());

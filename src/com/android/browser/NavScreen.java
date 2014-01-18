@@ -60,6 +60,7 @@ public class NavScreen extends RelativeLayout
     ImageButton mBookmarks;
     ImageButton mMore;
     ImageButton mHomeTab;
+    ImageButton mNewIncognitoTab;
     ImageButton mNewTab;
     FrameLayout mHolder;
 
@@ -127,10 +128,12 @@ public class NavScreen extends RelativeLayout
                 R.string.accessibility_transition_navscreen));
         mBookmarks = (ImageButton) findViewById(R.id.bookmarks);
         mHomeTab = (ImageButton) findViewById(R.id.gotohome);
+        mNewIncognitoTab = (ImageButton) findViewById(R.id.newincognitotab);
         mNewTab = (ImageButton) findViewById(R.id.newtab);
         mMore = (ImageButton) findViewById(R.id.more);
         mBookmarks.setOnClickListener(this);
         mHomeTab.setOnClickListener(this);
+        mNewIncognitoTab.setOnClickListener(this);
         mNewTab.setOnClickListener(this);
         mMore.setOnClickListener(this);
         mScroller = (NavTabScroller) findViewById(R.id.scroller);
@@ -158,8 +161,8 @@ public class NavScreen extends RelativeLayout
     public void onClick(View v) {
         if (mBookmarks == v) {
             mUiController.bookmarksOrHistoryPicker(ComboViews.Bookmarks);
-        } else if (mNewTab == v) {
-            openNewTab(false);
+        } else if (mNewIncognitoTab == v || mNewTab == v) {
+            openNewTab(mNewIncognitoTab == v);
         } else if (mHomeTab == v) {
             gotoHomePage();
         } else if (mMore == v) {
