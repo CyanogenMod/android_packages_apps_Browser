@@ -21,6 +21,7 @@ import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.view.View;
 import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebStorage;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -41,6 +42,7 @@ public class BrowserWebView extends WebView {
     private OnScrollChangedListener mOnScrollChangedListener;
     private WebChromeClient mWebChromeClient;
     private WebViewClient mWebViewClient;
+    private boolean mPrivateBrowsing = false;
 
     /**
      * @param context
@@ -50,7 +52,9 @@ public class BrowserWebView extends WebView {
      */
     public BrowserWebView(Context context, AttributeSet attrs, int defStyle,
             Map<String, Object> javascriptInterfaces, boolean privateBrowsing) {
-        super(context, attrs, defStyle, javascriptInterfaces, privateBrowsing);
+        super(context, attrs, defStyle, javascriptInterfaces, false);
+        // WebView doesn't support it, but save it here for internal use
+        mPrivateBrowsing = privateBrowsing;
     }
 
     /**
@@ -60,7 +64,9 @@ public class BrowserWebView extends WebView {
      */
     public BrowserWebView(
             Context context, AttributeSet attrs, int defStyle, boolean privateBrowsing) {
-        super(context, attrs, defStyle, privateBrowsing);
+        super(context, attrs, defStyle, false);
+        // WebView doesn't support it, but save it here for internal use
+        mPrivateBrowsing = privateBrowsing;
     }
 
     /**
@@ -153,4 +159,26 @@ public class BrowserWebView extends WebView {
         super.destroy();
     }
 
+    @Override
+    public boolean isPrivateBrowsingEnabled() {
+        return mPrivateBrowsing;
+    }
+
+    /* Make sure the local webview remains in sync, since the engine won't retain that data */
+    public void setPrivateBrowsing(boolean state) {
+        mPrivateBrowsing = state;
+        if (state) {
+            // Disable ALL the things
+            this.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+            this.getSettings().setAppCacheEnabled(false);
+            this.getSettings().setDomStorageEnabled(false);
+            this.getSettings().setDatabaseEnabled(false);
+            this.getSettings().setGeolocationEnabled(false);
+            this.getSettings().setSaveFormData(false);
+            this.getSettings().setSavePassword(false);
+            this.getSettings().setSupportMultipleWindows(false);
+            this.getSettings().setAppCacheMaxSize(0);
+            this.clearHistory();
+        }
+    }
 }
