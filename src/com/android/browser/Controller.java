@@ -1385,6 +1385,42 @@ public class Controller
                                 });
                     }
                 }
+                newTabItem = menu.findItem(R.id.open_newtab_incognito_context_menu_id);
+                newTabItem.setTitle(getSettings().openInBackground()
+                        ? R.string.contextmenu_openlink_incognito_newwindow_background
+                                : R.string.contextmenu_openlink_incognito_newwindow);
+                newTabItem.setVisible(showNewTab);
+                newTabItem.setVisible(!mTabControl.getCurrentTab().isPrivateBrowsingEnabled());
+                if (showNewTab) {
+                    if (WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE == type) {
+                        newTabItem.setOnMenuItemClickListener(
+                                new MenuItem.OnMenuItemClickListener() {
+                                    @Override
+                                    public boolean onMenuItemClick(MenuItem item) {
+                                        final HashMap<String, WebView> hrefMap =
+                                            new HashMap<String, WebView>();
+                                        hrefMap.put("webview", webview);
+                                        final Message msg = mHandler.obtainMessage(
+                                                FOCUS_NODE_HREF,
+                                                R.id.open_newtab_context_menu_id,
+                                                1, hrefMap);
+                                        webview.requestFocusNodeHref(msg);
+                                        return true;
+                                    }
+                                });
+                    } else {
+                        newTabItem.setOnMenuItemClickListener(
+                                new MenuItem.OnMenuItemClickListener() {
+                                    @Override
+                                    public boolean onMenuItemClick(MenuItem item) {
+                                        final Tab parent = mTabControl.getCurrentTab();
+                                        openTab(extra, parent != null,
+                                                !mSettings.openInBackground(), true, parent);
+                                        return true;
+                                    }
+                                });
+                    }
+                }
                 if (type == WebView.HitTestResult.SRC_ANCHOR_TYPE) {
                     break;
                 }
@@ -1557,6 +1593,10 @@ public class Controller
             // -- Main menu
             case R.id.new_tab_menu_id:
                 openTabToHomePage();
+                break;
+
+            case R.id.incognito_menu_id:
+                openIncognitoTab();
                 break;
 
             case R.id.close_other_tabs_id:
