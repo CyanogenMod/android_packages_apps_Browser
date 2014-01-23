@@ -20,6 +20,8 @@ import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
+import android.content.res.Resources;
+import android.content.res.Resources.NotFoundException;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
@@ -106,6 +108,17 @@ public class HomeProvider extends ContentProvider {
                 return new WebResourceResponse("text/html", "utf-8", ins);
             }
         } catch (Exception e) {}
+        if ("browser:incognito".equals(url)) {
+            try {
+                Resources res = context.getResources();
+                InputStream ins = res.openRawResource(
+                        com.android.internal.R.raw.incognito_mode_start_page);
+                return new WebResourceResponse("text/html", "utf8", ins);
+            } catch (NotFoundException ex) {
+                // This shouldn't happen, but try and gracefully handle it jic
+                Log.w(TAG, "Failed opening raw.incognito_mode_start_page", ex);
+            }
+        }
         return null;
     }
 
