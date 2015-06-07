@@ -28,5 +28,6 @@ Each value in the string-array is the name of a value in all_search_engines.xml
     <item>bing_it_IT</item>
     <item>yahoo_it</item>
     <item>libero</item>
+    <item>duckduckgo</item>
   </string-array>
 </resources>
