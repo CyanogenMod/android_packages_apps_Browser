@@ -30,9 +30,16 @@ import java.util.Locale;
 public class DefaultHomePageAndSearchMatcher {
     public static final String BING_SEARCH_KEY = "BING";
     public static final String YAHOO_SEARCH_KEY = "YAHOO";
+    public static final String GOOGLE_SEARCH_KEY = "GOOGLE";
+    public static final String SEARCH_HOME_OVERRIDE_SYSTEM_PROP = "ro.browser.search_override";
+    public static final String SEARCH_HOME_OVERRIDE_GOOGLE = "google";
+    public static final String SEARCH_HOME_OVERRIDE_YAHOO = "yahoo";
+    public static final String SEARCH_HOME_OVERRIDE_BING = "bing";
+    public static final String UNDEFINED_OVERRIDE_PROP = "undefined";
     private static final String AUSTRALIA_COUNTRY_CODE = "AU";
     private static final HomePage sBingHomePage = new BingHomePage();
     private static final HomePage sYahooHomePage = new YahooHomePage();
+    private static final HomePage sGoogleHomePage = new GoogleHomePage();
     private static final HomePage sDefaultHomePage = sYahooHomePage;
 
 
@@ -47,11 +54,29 @@ public class DefaultHomePageAndSearchMatcher {
         mLocaleToHomePage.put(Locale.CANADA.getCountry(), sBingHomePage);
     }
 
+
+    private static HashMap<String, HomePage> sOverrideToHomePage = new HashMap<String, HomePage>();
+    static {
+        sOverrideToHomePage.put(SEARCH_HOME_OVERRIDE_GOOGLE, sGoogleHomePage);
+        sOverrideToHomePage.put(SEARCH_HOME_OVERRIDE_BING, sBingHomePage);
+        sOverrideToHomePage.put(SEARCH_HOME_OVERRIDE_YAHOO, sYahooHomePage);
+    }
+
     private interface HomePage {
         Uri getUri(Context context);
     }
 
+    private static String getSearchOverride() {
+        return HomeAndSearchUtils.getSystemProperty(SEARCH_HOME_OVERRIDE_SYSTEM_PROP,
+                UNDEFINED_OVERRIDE_PROP);
+    }
+
     public static Uri getHomePageUri(Context context) {
+        String overrideString = getSearchOverride();
+        if (sOverrideToHomePage.containsKey(overrideString)) {
+            return sOverrideToHomePage.get(overrideString).getUri(context);
+        }
+
         HomePage homePage = sDefaultHomePage;
         Locale locale = context.getResources().getConfiguration().locale;
         if (locale != null && locale.getCountry() != null &&
@@ -76,8 +101,10 @@ public class DefaultHomePageAndSearchMatcher {
         }
         if (homePage == sBingHomePage) {
             return BING_SEARCH_KEY;
-        } else {
+        } else if (homePage == sYahooHomePage){
             return YAHOO_SEARCH_KEY;
+        } else {
+            return GOOGLE_SEARCH_KEY;
         }
     }
 
@@ -113,6 +140,15 @@ public class DefaultHomePageAndSearchMatcher {
             Uri.Builder builder = Uri.parse(YAHOO_URL).buildUpon();
             builder.appendQueryParameter(KEY_PARTNER_CODE, code);
             return builder.build();
+        }
+    }
+
+    public static class GoogleHomePage implements HomePage {
+        private static final String GOOGLE_URL = "https://www.google.com/";
+
+        @Override
+        public Uri getUri(Context context) {
+            return Uri.parse(GOOGLE_URL);
         }
     }
 }
