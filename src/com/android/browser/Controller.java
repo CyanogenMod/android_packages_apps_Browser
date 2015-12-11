@@ -1354,6 +1354,7 @@ public class Controller
                 break;
 
             case WebView.HitTestResult.SRC_ANCHOR_TYPE:
+                menu.findItem(R.id.insight_item_id).setOnMenuItemClickListener(new Insight(extra));
             case WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE:
                 menu.setHeaderTitle(extra);
                 // decide whether to show the open link in new tab option
@@ -2131,6 +2132,22 @@ public class Controller
 
         public Copy(CharSequence toCopy) {
             mText = toCopy;
+        }
+    }
+
+    private class Insight implements OnMenuItemClickListener {
+        String mText;
+        @Override
+        public boolean onMenuItemClick(MenuItem item) {
+            Intent insightIntent = new Intent("cyanogenmod.intent.action.INSIGHT");
+            insightIntent.addCategory(Intent.CATEGORY_DEFAULT);
+            insightIntent.putExtra("cyanogenmod.intent.extra.EXTRA_INSIGHT_SELECTED_TEXT", mText);
+            getContext().startActivity(insightIntent, null);
+            return true;
+        }
+
+        public Insight(String selectedText) {
+            mText = selectedText;
         }
     }
 
