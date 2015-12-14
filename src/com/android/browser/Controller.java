@@ -114,6 +114,9 @@ public class Controller
         "android.speech.extras.SEND_APPLICATION_ID_EXTRA";
     private static final String INCOGNITO_URI = "browser:incognito";
 
+    // constants for Insight action/extras.  Not sure where to put these ATM so they're going here until we make a decision
+    public static final String INSIGHT_ACTION = "cyanogenmod.intent.action.INSIGHT";
+    public static final String INSIGHT_EXTRA_SELECTED_TEXT = "cyanogenmod.intent.extra.EXTRA_INSIGHT_SELECTED_TEXT";
 
     // public message ids
     public final static int LOAD_URL = 1001;
@@ -1354,6 +1357,7 @@ public class Controller
                 break;
 
             case WebView.HitTestResult.SRC_ANCHOR_TYPE:
+                menu.findItem(R.id.insight_item_id).setOnMenuItemClickListener(new Insight(extra));
             case WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE:
                 menu.setHeaderTitle(extra);
                 // decide whether to show the open link in new tab option
@@ -2131,6 +2135,22 @@ public class Controller
 
         public Copy(CharSequence toCopy) {
             mText = toCopy;
+        }
+    }
+
+    private class Insight implements OnMenuItemClickListener {
+        String mText;
+        @Override
+        public boolean onMenuItemClick(MenuItem item) {
+            Intent insightIntent = new Intent(INSIGHT_ACTION);
+            insightIntent.addCategory(Intent.CATEGORY_DEFAULT);
+            insightIntent.putExtra(INSIGHT_EXTRA_SELECTED_TEXT, mText);
+            getContext().startActivity(insightIntent, null);
+            return true;
+        }
+
+        public Insight(String selectedText) {
+            mText = selectedText;
         }
     }
 

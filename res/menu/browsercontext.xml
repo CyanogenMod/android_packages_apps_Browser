@@ -46,6 +46,8 @@
             android:title="@string/contextmenu_savelink"/>
         <item android:id="@+id/copy_link_context_menu_id"
             android:title="@string/contextmenu_copylink"/>
+        <item android:id="@+id/insight_item_id"
+              android:title="Insight"/>
     </group>
     <group android:id="@+id/IMAGE_MENU">
         <item android:id="@+id/download_context_menu_id"
