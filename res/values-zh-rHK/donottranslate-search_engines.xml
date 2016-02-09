@@ -26,5 +26,6 @@ Each value in the string-array is the name of a value in all_search_engines.xml
     <item>yahoo_hk</item>
     <item>bing_zh_HK</item>
     <item>baidu</item>
+    <item>duckduckgo</item>
   </string-array>
 </resources>
