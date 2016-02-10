@@ -8,3 +8,4 @@
 -keep class org.chromium.components.navigation_interception.** {*;}
 -keep class org.chromium.components.web_contents_delegate_android.** {*;}
 -keep class org.codeaurora.** {*;}
+-keep class com.cyanogen.ambient.** { *; }

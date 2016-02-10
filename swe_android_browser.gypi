@@ -5,9 +5,33 @@
   },
   'targets' : [
     {
+        'target_name': 'ambient_sdk-no-res',
+        'type': 'none',
+        'variables': {
+            'jar_path': './lib/ambientsdk.jar',
+        },
+        'includes': ['../../build/java_prebuilt.gypi'],
+    },
+    {
+        'target_name': 'ambient_sdk',
+        'type': 'none',
+        'variables': {
+            'java_in_dir': './ambientsdk/sdk',
+            'R_package': ['com.cyanogen.ambient'],
+            'R_package_relpath': ['com/cyanogen/ambient'],
+            'has_java_resources': 1,
+            'run_findbugs': 0,
+        },
+        'dependencies': [
+            'ambient_sdk-no-res'
+        ],
+        'includes': ['../../build/java.gypi'],
+    },
+    {
       'target_name': 'swe_android_browser_apk',
       'type': 'none',
       'dependencies': [
+        'ambient_sdk',
         'swe_android_browser_apk_config',
         '<@(swe_dependencies)',
         #add new dependencies in swe_common.gypi
@@ -16,6 +40,7 @@
         'apk_name': 'SWE_AndroidBrowser',
         'native_lib_version_name': '<(version_full)',
         'java_in_dir': '.',
+        'input_jars_paths': ['./lib/ambientsdk.jar',],
         'resource_dir': '../browser/res',
          #TODO need proguard config file before we can enable this
         'proguard_enabled': 'false',
